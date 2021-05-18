@@ -1,0 +1,48 @@
+//semaphore functioning
+
+typedef struct{
+    int value;
+    struct process *head,*tail;
+} semaphore;
+
+void setsemaphore(semaphore *S,int val){
+    S->value = val;
+    S->head = S->tail = null;
+}
+
+void push(semaphore *S, process *cur){
+    if(S->tail == null){
+        S->tail = cur;
+        S->head = cur;
+    }
+    else{
+        (S->head)->nextProcess = cur;
+        S->head = cur;
+    }
+}
+
+process pop(semaphore *S){
+    if(S->tail == null){
+        //throw(error);
+        //cout<<"ERROR \n";
+    }
+    process *temp = S->tail; 
+    S->tail = S->tail->nextProcess;
+    return temp;
+}
+
+void wait(semaphore *S){
+    S->value--;
+    if(S->value < 0){
+        push(S,currentProcess);
+        block();
+    }
+}
+
+void signal(semaphore *S){
+    S->value++;
+    if(S->value <=0){
+       process P = pop(S);
+        wakeup(P);
+    }
+}

@@ -1,0 +1,81 @@
+/***** GLOBAL_VARIABLES ******/
+
+Semaphore readersin,readersout,writers; //default initialization to 1
+
+setsemaphore(writers,0);
+setsemaphore(readersin,1);
+setsemaphore(readersout,1);
+
+int readers_in=0,readers_out=0;
+
+bool writerwaiting=false;
+
+
+class Solution{
+
+
+	/***** READER *****/
+
+	void reader(){
+
+		wait(readersin); // wait for permission to modify readers_in
+
+		readers_in++;
+
+		signal(readersin); // signals readersin to wakeup
+
+		/***** CRITICAL SECTION *****/
+
+		// Reader reads 
+
+		wait(readersout); // wait for permission to modify readers_out
+
+		readers_out++; 
+
+		if(readers_in==readers_out && writerwaiting ==true ){ 
+
+		// if we have a writer waiting and it is the last reader (ahead of the writer) => activate writers (i.e; send signal to wakeup)
+
+			signal(writers);   
+		}
+
+		signal(readersout);  // signal readersout to wake up
+
+	}
+
+
+
+
+	/****** WRITER *******/
+
+	void writer(){
+
+		wait(readersin);
+
+		wait(readersout); //get permissions to modify both
+
+		if(readers_in == readers_out){ 
+
+			signal(readersout);  // if no readers are there then no problems; writer can write easily
+		
+		}
+		else{
+
+			writerwaiting=true;  // active readers are there so indicate a waiting writer is present
+
+			signal(readersout);  // wake readersout and continue  
+
+			wait(writers);   // writers will then be signalled to wakeup when all readers before it are done
+
+			writerwaiting = false;   // writer is now active so make writerwaiting as false 
+		}
+
+		/***** CRITICAL SECTION *****/
+
+		// writer writes
+
+		signal(readersin);   // signal readersin to wake up 
+
+	}
+
+}
