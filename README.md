@@ -12,7 +12,7 @@ It gives priority to readers.That means writers come to action after all the rea
 
 ## Second Readers-Writers Problem
 
-It gives priority to writers.That means readers come to action after all the writers are done.This could lead to starvation of readers.
+It gives priority to writers.That means no writer is kept waiting longer than absolutely necessary.So readers are kept waiting.This could lead to starvation of readers.
 
 ## Third Readers-Writers Problem
 
