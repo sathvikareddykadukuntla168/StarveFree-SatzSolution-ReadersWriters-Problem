@@ -6,15 +6,15 @@ This repository contains a solution for starve free readers-writers problem. Thi
 
 The reader-writer problems deal with synchronysing multiple processes trying to read or write upon a shared data.
 
-## First Readers-Writers Problem
+### First Readers-Writers Problem
 
 It gives priority to readers.That means writers come to action after all the readers are done.This could lead to starvation of writers.
 
-## Second Readers-Writers Problem
+### Second Readers-Writers Problem
 
 It gives priority to writers.That means no writer is kept waiting longer than absolutely necessary.So readers are kept waiting.This could lead to starvation of readers.
 
-## Third Readers-Writers Problem
+### Third Readers-Writers Problem
 
 It gives **"NO"** priority to any.The requests for same resource will be served in the order they arrive (FIRST COME FIRST SERVE).Here no potential starvation is seen because no thread is given priority and so  work advances smoothly.
 
